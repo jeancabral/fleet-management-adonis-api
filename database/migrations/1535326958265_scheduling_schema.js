@@ -7,14 +7,7 @@ class SchedulingSchema extends Schema {
     this.create('schedulings', (table) => {
       table.increments()
       table
-        .integer('registeredBy')
-        .unsigned()
-        .references('id')
-        .inTable('users')
-        .onUpdate('CASCADE')
-        .onDelete('CASCADE')
-      table
-        .integer('passengerName')
+        .integer('user_id')
         .unsigned()
         .references('id')
         .inTable('users')

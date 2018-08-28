@@ -18,3 +18,15 @@ const Route = use('Route')
 Route.post('/users', 'UserController.create')
 
 Route.post('/sessions', 'SessionController.create')
+
+Route.resource('schedulings', 'SchedulingController')
+    .apiOnly()
+    .middleware('auth')
+
+Route.resource('cars', 'CarController')
+    .apiOnly()
+    .middleware('auth')
+
+Route.resource('trips', 'TripController')
+    .apiOnly()
+    .middleware('auth')
