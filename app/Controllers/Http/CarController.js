@@ -26,14 +26,14 @@ class CarController {
 
     const data = request.only([
       'name',
-      'licensePlate',
+      'license_plate',
       'model',
       'color'
     ])
 
     const car = new Car()
     car.name = data.name
-    car.licensePlate = data.licensePlate
+    car.license_plate = data.license_plate
     car.model = data.model
     car.color = data.color
 
@@ -65,7 +65,7 @@ class CarController {
 
     const data = request.only([
       'name',
-      'licensePlate',
+      'license_plate',
       'model',
       'color'
     ])
@@ -76,7 +76,7 @@ class CarController {
     }
 
     car.name = data.name
-    car.licensePlate = data.licensePlate
+    car.license_plate = data.license_plate
     car.model = data.model
     car.color = data.color
 

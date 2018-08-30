@@ -15,6 +15,12 @@
 
 const Route = use('Route')
 
+Route.get('/users', 'UserController.index').middleware('auth')
+
+Route.get('users/:id', 'UserController.show').middleware('auth')
+
+Route.put('users/:id', 'UserController.update').middleware('auth')
+
 Route.post('/users', 'UserController.create')
 
 Route.post('/sessions', 'SessionController.create')

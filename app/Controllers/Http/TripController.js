@@ -1,5 +1,8 @@
 'use strict'
 
+var voucher_codes = require('voucher-code-generator');
+var mm = require('moment');
+
 const Trip = use('App/Models/Trip')
 
 /**
@@ -12,7 +15,12 @@ class TripController {
    */
   async index({ request, response, view }) {
 
-    const trips = Trip.all()
+    const trips = await Trip
+      .query()
+      .with('user')
+      .with('scheduling')
+      .with('car')
+      .fetch()
 
     return trips
 
@@ -22,34 +30,40 @@ class TripController {
    * Create/save a new trip.
    * POST trips
    */
-  async store({ request, response }) {
+  async store({ auth, request, response }) {
 
     const data = request.only([
-      'voucher',
-      'ticket',
-      'driver',
-      'transport',
-      'kmInitial',
-      'kmFinal',
-      'dateDeparture',
-      'dateReturn',
-      'hourDeparture',
-      'hourReturn',
+      'scheduling_id',
+      'user_id',
+      'car_id',
+      'km_initial',
+      'km_final',
+      'date_departure',
+      'date_return',
+      'hour_departure',
+      'hour_return',
       'note'
     ])
 
+    let vouchers = voucher_codes.generate({
+      charset: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      length: 4,
+      prefix: mm().format('YYYY').concat('-')
+    });
+
     const trip = new Trip()
-    trip.voucher = data.voucher
-    trip.ticket = data.ticket
-    trip.driver = data.driver
-    trip.transport = data.transport
-    trip.kmInitial = data.kmInitial
-    trip.kmFinal = data.kmFinal
-    trip.dateDeparture = data.dateDeparture
-    trip.dateReturn = data.dateReturn
-    trip.hourDeparture = data.hourDeparture
-    trip.hourReturn = data.hourReturn
+    trip.scheduling_id = data.scheduling_id
+    trip.ticket = vouchers
+    trip.user_id = data.user_id
+    trip.car_id = data.car_id
+    trip.km_initial = data.km_initial
+    trip.km_final = data.km_final
+    trip.date_departure = data.date_departure
+    trip.date_return = data.date_return
+    trip.hour_departure = data.hour_departure
+    trip.hour_return = data.hour_return
     trip.note = data.note
+    trip.created_by = auth.user.id
 
     await trip.save()
 
@@ -75,37 +89,38 @@ class TripController {
    * Update trip details.
    * PUT or PATCH trips/:id
    */
-  async update({ params, request, response }) {
+  async update({ auth, params, request, response }) {
     const data = request.only([
-      'voucher',
+      'scheduling_id',
       'ticket',
-      'driver',
-      'transport',
-      'kmInitial',
-      'kmFinal',
-      'dateDeparture',
-      'dateReturn',
-      'hourDeparture',
-      'hourReturn',
+      'user_id',
+      'car_id',
+      'km_initial',
+      'km_final',
+      'date_departure',
+      'date_return',
+      'hour_departure',
+      'hour_return',
       'note'
     ])
 
     const trip = await Trip.find(params.id)
     if (!trip) {
       return response.status(404).json({ data: 'Resource not found' })
-    }    
+    }
 
-    trip.voucher = data.voucher
+    trip.scheduling_id = data.scheduling_id
     trip.ticket = data.ticket
-    trip.driver = data.driver
-    trip.transport = data.transport
-    trip.kmInitial = data.kmInitial
-    trip.kmFinal = data.kmFinal
-    trip.dateDeparture = data.dateDeparture
-    trip.dateReturn = data.dateReturn
-    trip.hourDeparture = data.hourDeparture
-    trip.hourReturn = data.hourReturn
+    trip.user_id = data.user_id
+    trip.car_id = data.car_id
+    trip.km_initial = data.km_initial
+    trip.km_final = data.km_final
+    trip.date_departure = data.date_departure
+    trip.date_return = data.date_return
+    trip.hour_departure = data.hour_departure
+    trip.hour_return = data.hour_return
     trip.note = data.note
+    trip.created_by = auth.user.id
 
     await trip.save()
 

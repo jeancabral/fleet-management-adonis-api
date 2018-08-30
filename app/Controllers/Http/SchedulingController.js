@@ -19,7 +19,7 @@ class SchedulingController {
   .with('user')
   .fetch()
 
-    return schedulings
+    return schedulings.toJSON()
 
   }
 
@@ -27,19 +27,19 @@ class SchedulingController {
    * Create/save a new scheduling.
    * POST schedulings
    */
-  async store({ request, response }) {
+  async store({ auth, request, response }) {
 
     const data = request.only([
       'user_id',
       'destiny',
       'object',
       'note',
-      'qtyPassengers',
-      'freightCarried',
-      'dateDeparture',
-      'dateReturn',
-      'hourDeparture',
-      'hourReturn'
+      'qty_passengers',
+      'freight_carried',
+      'date_departure',
+      'date_return',
+      'hour_departure',
+      'hour_return'
     ])
 
     const scheduling = new Scheduling()
@@ -47,13 +47,14 @@ class SchedulingController {
     scheduling.destiny = data.destiny
     scheduling.object = data.object
     scheduling.note = data.note
-    scheduling.qtyPassengers = data.qtyPassengers
-    scheduling.freightCarried = data.freightCarried
-    scheduling.dateDeparture = data.dateDeparture
-    scheduling.dateReturn = data.dateReturn
-    scheduling.hourDeparture = data.hourDeparture
-    scheduling.hourReturn = data.hourReturn
-
+    scheduling.qty_passengers = data.qty_passengers
+    scheduling.freight_carried = data.freight_carried
+    scheduling.date_departure = data.date_departure
+    scheduling.date_return = data.date_return
+    scheduling.hour_departure = data.hour_departure
+    scheduling.hour_return = data.hour_return
+    scheduling.created_by = auth.user.id
+    
     await scheduling.save()
 
     return response.status(201).json(scheduling)
@@ -78,18 +79,18 @@ class SchedulingController {
    * Update scheduling details.
    * PUT or PATCH schedulings/:id
    */
-  async update({ params, request, response }) {
+  async update({ auth, params, request, response }) {
     const data = request.only([
       'user_id',
       'destiny',
       'object',
       'note',
-      'qtyPassengers',
-      'freightCarried',
-      'dateDeparture',
-      'dateReturn',
-      'hourDeparture',
-      'hourReturn'
+      'qty_assengers',
+      'freight_carried',
+      'date_departure',
+      'date_return',
+      'hour_departure',
+      'hour_return'
     ])
 
     const scheduling = await Scheduling.find(params.id)
@@ -101,12 +102,13 @@ class SchedulingController {
     scheduling.destiny = data.destiny
     scheduling.object = data.object
     scheduling.note = data.note
-    scheduling.qtyPassengers = data.qtyPassengers
-    scheduling.freightCarried = data.freightCarried
-    scheduling.dateDeparture = data.dateDeparture
-    scheduling.dateReturn = data.dateReturn
-    scheduling.hourDeparture = data.hourDeparture
-    scheduling.hourReturn = data.hourReturn
+    scheduling.qty_passengers = data.qty_passengers
+    scheduling.freight_carried = data.freight_carried
+    scheduling.date_departure = data.date_departure
+    scheduling.date_return = data.date_return
+    scheduling.hour_departure = data.hour_departure
+    scheduling.hour_return = data.hour_return
+    scheduling.created_by = auth.user.id
 
     await scheduling.save()
 

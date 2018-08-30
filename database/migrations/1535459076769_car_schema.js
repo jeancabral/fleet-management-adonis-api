@@ -7,7 +7,7 @@ class CarSchema extends Schema {
     this.create('cars', (table) => {
       table.increments()
       table.string('name', 80).notNullable()
-      table.string('licensePlate', 7).notNullable().unique()
+      table.string('license_plate', 7).notNullable().unique()
       table.string('model', 80).notNullable()
       table.string('color', 80).notNullable()
       table.timestamps()
