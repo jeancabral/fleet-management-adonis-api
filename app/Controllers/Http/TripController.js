@@ -53,7 +53,7 @@ class TripController {
 
     const trip = new Trip()
     trip.scheduling_id = data.scheduling_id
-    trip.ticket = vouchers
+    trip.ticket = vouchers[0]
     trip.user_id = data.user_id
     trip.car_id = data.car_id
     trip.km_initial = data.km_initial

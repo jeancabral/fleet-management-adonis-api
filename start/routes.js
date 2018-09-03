@@ -17,6 +17,8 @@ const Route = use('Route')
 
 Route.get('/users', 'UserController.index').middleware('auth')
 
+Route.get('/users/drivers', 'UserController.driver').middleware('auth')
+
 Route.get('users/:id', 'UserController.show').middleware('auth')
 
 Route.put('users/:id', 'UserController.update').middleware('auth')

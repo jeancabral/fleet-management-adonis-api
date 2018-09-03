@@ -19,6 +19,19 @@ class UserController {
 
   }
 
+  /**
+ * Show a list of all drivers users.
+ * GET driver
+ */
+  async driver({ request, response, view }) {
+
+    //const schedulings = Scheduling.with('users').all()
+
+    return await Database.table('users')
+      .select("id", "username", "email", "name", "lastname", "role", "department", "enrollment", "telephone")
+      .where({ role: 'driver'})
+  }
+
 
   /**
  * Display a single user.
@@ -46,10 +59,10 @@ class UserController {
   }
 
 
-    /**
-   * Update trip details.
-   * PUT or PATCH trips/:id
-   */
+  /**
+ * Update trip details.
+ * PUT or PATCH trips/:id
+ */
   async update({ params, request, response }) {
     const data = request.only(["username", "email", "password", "name", "lastname", "role", "department", "enrollment", "telephone"])
 

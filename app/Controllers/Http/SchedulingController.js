@@ -15,9 +15,14 @@ class SchedulingController {
     //const schedulings = Scheduling.with('users').all()
 
     const schedulings = await Scheduling
-  .query()
-  .with('user')
-  .fetch()
+      .query()
+      .select('schedulings.id', 'schedulings.user_id', 'schedulings.destiny', 'schedulings.object', 'schedulings.note', 'schedulings.qty_passengers', 'schedulings.freight_carried',
+        'schedulings.date_departure', 'schedulings.date_return', 'schedulings.hour_departure', 'schedulings.hour_return', 'schedulings.created_by',
+        'schedulings.created_at', 'schedulings.updated_at', 'trips.ticket')
+      .from('schedulings')
+      .fullOuterJoin('trips', 'schedulings.id', 'trips.scheduling_id')
+      .with('user')
+      .fetch()
 
     return schedulings.toJSON()
 
@@ -54,7 +59,7 @@ class SchedulingController {
     scheduling.hour_departure = data.hour_departure
     scheduling.hour_return = data.hour_return
     scheduling.created_by = auth.user.id
-    
+
     await scheduling.save()
 
     return response.status(201).json(scheduling)

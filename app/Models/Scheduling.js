@@ -18,12 +18,12 @@ class Scheduling extends Model {
         return `${destiny} - ${object}`
     }
 
-    getStart({ date_departure }) {
-        return date_departure
+    getStart({ date_departure, hour_departure }) {
+        return moment(date_departure).format('YYYY-MM-DD') + ' ' + hour_departure
     }
 
-    getEnd({ date_return }) {
-        return date_return
+    getEnd({ date_return, hour_return }) {
+        return moment(date_return).format('YYYY-MM-DD') + ' ' + hour_return
     }
 
     getDeparture({ date_departure }) {
