@@ -24,6 +24,7 @@
     "@adonisjs/framework": "^5.0.7",
     "@adonisjs/ignitor": "^2.0.6",
     "@adonisjs/lucid": "^5.0.4",
+    "fs": "0.0.1-security",
     "moment": "^2.22.2",
     "mysql": "^2.16.0",
     "pg": "^7.4.3",

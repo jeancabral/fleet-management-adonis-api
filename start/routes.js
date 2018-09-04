@@ -25,6 +25,9 @@ Route.put('users/:id', 'UserController.update').middleware('auth')
 
 Route.post('/users', 'UserController.create')
 
+Route.get('images/:path', 'CsvController.show')
+Route.post('/images', 'CsvController.store')
+
 Route.post('/sessions', 'SessionController.create')
 
 Route.resource('schedulings', 'SchedulingController')
