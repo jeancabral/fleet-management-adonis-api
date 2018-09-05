@@ -61,7 +61,8 @@ module.exports = {
   */
   raw: {
     types: [
-      'text/*'
+      'text/*',
+      'application/json'
     ]
   },
 

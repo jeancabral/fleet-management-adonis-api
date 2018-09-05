@@ -10,14 +10,14 @@ class GascontrolController {
    * Show a list of all gascontrols.
    * GET gascontrols
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
   }
 
   /**
    * Create/save a new gascontrol.
    * POST gascontrols
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
 
     // const data = request.only(["VECULO", "NRFTOTA", "MODELO", "COR", "TIPODEFROTA", "KMOUHORMETROINICIAL", "RESPONSVEL", "DATAHORA", "TRANSAO", "LIBERAORESTRIO", "CARTO", "ESTABELECIMENTO", "CIDADE", "MOTORISTA", "MATRCULA", "QUILOMETRAGEMOUHORAS", "LIMITEABASTECIMENTOSERVIOS", "LIMITEOFICINA", "SALDOABASTECIMENTOSERVIOS", "SALDOOFICINA", "SERVIO", "SALDOANTERIOR", "VALOR", "KMRODADOSOUHORASTRABALHADAS", "LITROS", "MDIAPADRO", "KMLITROOULITROSHORA", "VALORLITRO", "CONTROLEDEDESEMPENHO", "OBS"])
 
@@ -57,31 +57,33 @@ class GascontrolController {
     // return response.status(201).json(gascontrol)
 
     //return response.send(JSON.parse(data))
-   const userId = await Database
-  .insert(JSON.parse(data))
-  .into('gascontrols')
-
+    const userId = await Database
+      .insert(JSON.parse(data))
+      .into('gascontrols')
+      .returning('id')
+      
+    return userId;
   }
 
   /**
    * Display a single gascontrol.
    * GET gascontrols/:id
    */
-  async show ({ params, request, response, view }) {
+  async show({ params, request, response, view }) {
   }
 
   /**
    * Update gascontrol details.
    * PUT or PATCH gascontrols/:id
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
   }
 
   /**
    * Delete a gascontrol with id.
    * DELETE gascontrols/:id
    */
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response }) {
   }
 }
 

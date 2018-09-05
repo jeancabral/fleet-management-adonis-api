@@ -25,9 +25,9 @@ Route.put('users/:id', 'UserController.update').middleware('auth')
 
 Route.post('/users', 'UserController.create')
 
-Route.get('images/:path', 'CsvController.show')
+Route.get('images/:path', 'CsvController.show').middleware('auth')
 
-Route.post('/images', 'CsvController.store')
+Route.post('/images', 'CsvController.store').middleware('auth')
 
 Route.post('/gascontrol', 'GascontrolController.store')
 

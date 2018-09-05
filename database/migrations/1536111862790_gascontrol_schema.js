@@ -36,6 +36,8 @@ class GascontrolSchema extends Schema {
       table.string('VALORLITRO')
       table.string('CONTROLEDEDESEMPENHO')
       table.string('OBS')
+      table.string('MESBASE')
+      table.string('ANOBASE')
       table.timestamps()
     })
   }
