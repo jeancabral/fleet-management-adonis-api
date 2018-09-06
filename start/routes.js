@@ -31,6 +31,10 @@ Route.post('/images', 'CsvController.store').middleware('auth')
 
 Route.post('/gascontrol', 'GascontrolController.store')
 
+Route.delete('/gascontrol', 'GascontrolController.destroy')
+
+Route.put('/gascontrol/:id', 'GascontrolController.update')
+
 Route.post('/sessions', 'SessionController.create')
 
 Route.resource('schedulings', 'SchedulingController')
