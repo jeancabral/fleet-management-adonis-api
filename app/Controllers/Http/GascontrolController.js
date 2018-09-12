@@ -10,7 +10,12 @@ class GascontrolController {
    * Show a list of all gascontrols.
    * GET gascontrols
    */
-  async index({ request, response, view }) {}
+  async index({ request, response, view }) {
+    const fullcontrol =  await Database
+  .raw('select * from fullcontrol')
+
+  return response.status(200).json(fullcontrol['rows']);
+  }
 
   /**
    * Create/save a new gascontrol.
@@ -24,12 +29,6 @@ class GascontrolController {
 
     return userId;
   }
-
-  /**
-   * Display a single gascontrol.
-   * GET gascontrols/:id
-   */
-  async show({ params, request, response, view }) {}
 
   /**
    * Update gascontrol details.

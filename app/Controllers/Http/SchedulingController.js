@@ -1,6 +1,7 @@
 'use strict'
 
 const Scheduling = use('App/Models/Scheduling')
+const Database = use("Database");
 
 /**
  * Resourceful controller for interacting with schedulings
@@ -25,6 +26,17 @@ class SchedulingController {
       .fetch()
 
     return schedulings.toJSON()
+
+  }
+
+  async fullcalendar({ request, response, view }) {
+
+    //const schedulings = Scheduling.with('users').all()
+
+  const fullcontrol =  await Database
+  .raw('select * from public.scheduling_view')
+
+  return response.status(200).json(fullcontrol['rows']);
 
   }
 

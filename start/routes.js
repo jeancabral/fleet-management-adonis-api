@@ -29,6 +29,8 @@ Route.get('images/:path', 'CsvController.show').middleware('auth')
 
 Route.post('/images', 'CsvController.store').middleware('auth')
 
+Route.get('/gascontrol', 'GascontrolController.index')
+
 Route.post('/gascontrol', 'GascontrolController.store')
 
 Route.delete('/gascontrol', 'GascontrolController.destroy')
@@ -37,14 +39,14 @@ Route.put('/gascontrol/:id', 'GascontrolController.update')
 
 Route.post('/sessions', 'SessionController.create')
 
+Route.get('/calendar', 'SchedulingController.fullcalendar')
+
 Route.resource('schedulings', 'SchedulingController')
-    .apiOnly()
-    .middleware('auth')
+    .apiOnly().middleware('auth')
 
 Route.resource('cars', 'CarController')
     .apiOnly()
     .middleware('auth')
 
 Route.resource('trips', 'TripController')
-    .apiOnly()
-    .middleware('auth')
+    .apiOnly().middleware('auth')

@@ -28,14 +28,30 @@ class CarController {
       'name',
       'license_plate',
       'model',
-      'color'
+      'fleet',
+      'automaker',
+      'motor',
+      'type_fuel',
+      'color',
+      'fabrication_date',
+      'model_date',
+      'tank_capacity'
+
+
     ])
 
     const car = new Car()
     car.name = data.name
     car.license_plate = data.license_plate
     car.model = data.model
+    car.fleet = data.fleet
+    car.automaker = data.automaker
+    car.motor = data.motor
+    car.type_fuel = data.type_fuel
     car.color = data.color
+    car.fabrication_date = data.fabrication_date
+    car.model_date = data.model_date
+    car.tank_capacity = data.tank_capacity
 
     await car.save()
 
@@ -67,7 +83,14 @@ class CarController {
       'name',
       'license_plate',
       'model',
-      'color'
+      'fleet',
+      'automaker',
+      'motor',
+      'type_fuel',
+      'color',
+      'fabrication_date',
+      'model_date',
+      'tank_capacity'
     ])
 
     const car = await Car.find(params.id)
@@ -78,7 +101,14 @@ class CarController {
     car.name = data.name
     car.license_plate = data.license_plate
     car.model = data.model
+    car.fleet = data.fleet
+    car.automaker = data.automaker
+    car.motor = data.motor
+    car.type_fuel = data.type_fuel
     car.color = data.color
+    car.fabrication_date = data.fabrication_date
+    car.model_date = data.model_date
+    car.tank_capacity = data.tank_capacity
 
     await car.save()
 
