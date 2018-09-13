@@ -12,7 +12,7 @@ class GascontrolController {
    */
   async index({ request, response, view }) {
     const fullcontrol =  await Database
-  .raw('select * from fullcontrol')
+  .raw('SELECT * FROM public.gascontrol_view;')
 
   return response.status(200).json(fullcontrol['rows']);
   }

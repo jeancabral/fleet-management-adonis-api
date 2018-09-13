@@ -35,7 +35,7 @@
     resetable "^1.0.3"
     uuid "^3.3.2"
 
-"@adonisjs/bodyparser@^2.0.3":
+"@adonisjs/bodyparser@^2.0.4":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@adonisjs/bodyparser/-/bodyparser-2.0.4.tgz#8b99fa6cee9570870607e6a65156115d77c39deb"
   dependencies:
