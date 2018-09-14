@@ -15,38 +15,43 @@
 
 const Route = use('Route')
 
-Route.get('/users', 'UserController.index').middleware('auth')
+Route.group(() => {
 
-Route.get('/users/drivers', 'UserController.driver').middleware('auth')
+    Route.get('/users', 'UserController.index').middleware('auth')
 
-Route.get('users/:id', 'UserController.show').middleware('auth')
+    Route.get('/users/drivers', 'UserController.driver').middleware('auth')
 
-Route.put('users/:id', 'UserController.update').middleware('auth')
+    Route.get('users/:id', 'UserController.show').middleware('auth')
 
-Route.post('/users', 'UserController.create')
+    Route.put('users/:id', 'UserController.update').middleware('auth')
 
-Route.get('images/:path', 'CsvController.show').middleware('auth')
+    Route.post('/users', 'UserController.create')
 
-Route.post('/images', 'CsvController.store').middleware('auth')
+    Route.get('images/:path', 'CsvController.show').middleware('auth')
 
-Route.get('/gascontrol', 'GascontrolController.index')
+    Route.post('/images', 'CsvController.store').middleware('auth')
 
-Route.post('/gascontrol', 'GascontrolController.store')
+    Route.get('/gascontrol', 'GascontrolController.index')
 
-Route.delete('/gascontrol', 'GascontrolController.destroy')
+    Route.post('/gascontrol', 'GascontrolController.store')
 
-Route.put('/gascontrol/:id', 'GascontrolController.update')
+    Route.delete('/gascontrol', 'GascontrolController.destroy')
 
-Route.post('/sessions', 'SessionController.create')
+    Route.put('/gascontrol/:id', 'GascontrolController.update')
 
-Route.get('/calendar', 'SchedulingController.fullcalendar')
+    Route.post('/sessions', 'SessionController.create')
 
-Route.resource('schedulings', 'SchedulingController')
-    .apiOnly().middleware('auth')
+    Route.get('/calendar', 'SchedulingController.fullcalendar')
 
-Route.resource('cars', 'CarController')
-    .apiOnly()
-    .middleware('auth')
+    Route.resource('schedulings', 'SchedulingController')
+        .apiOnly().middleware('auth')
 
-Route.resource('trips', 'TripController')
-    .apiOnly().middleware('auth')
+    Route.resource('cars', 'CarController')
+        .apiOnly()
+        .middleware('auth')
+
+    Route.resource('trips', 'TripController')
+        .apiOnly().middleware('auth')
+
+}).prefix('api');
+
