@@ -4,6 +4,7 @@ var voucher_codes = require('voucher-code-generator');
 var mm = require('moment');
 
 const Trip = use('App/Models/Trip')
+const Database = use('Database')
 
 /**
  * Resourceful controller for interacting with trips
@@ -23,6 +24,51 @@ class TripController {
       .fetch()
 
     return trips
+
+  }
+
+  async trips_fullcalendar({ request, response, view }) {
+
+    const fullcontrol = await Database
+      .raw('select * from public.trip_view')
+
+    return response.status(200).json(fullcontrol['rows']);
+
+  }
+
+  async trips_departure({ request, response, view }) {
+
+    const fullcontrol = await Database
+      .raw("SELECT * FROM public.trip_view WHERE flag_status_trip is NULL AND to_date(start,'YYYY-MM-DD') = to_date(TO_CHAR(NOW() :: DATE, 'YYYY-MM-DD'),'YYYY-MM-DD')")
+
+    return response.status(200).json(fullcontrol['rows']);
+
+  }
+
+
+  async trips_return({ request, response, view }) {
+
+    const fullcontrol = await Database
+      .raw("SELECT * FROM public.trip_view WHERE flag_status_trip = 'S' AND to_date(start,'YYYY-MM-DD') = to_date(TO_CHAR(NOW() :: DATE, 'YYYY-MM-DD'),'YYYY-MM-DD')")
+
+    return response.status(200).json(fullcontrol['rows']);
+
+  }
+
+  async trips_daily_itinerary_driver({ params, response }) {
+
+    const fullcontrol = await Database
+      .raw("SELECT * FROM public.trip_view WHERE (flag_finish_trip IS NULL OR flag_finish_trip = 'S') AND to_date(start,'YYYY-MM-DD') = to_date(TO_CHAR(NOW() :: DATE, 'YYYY-MM-DD'),'YYYY-MM-DD') AND user_id = "+ params.id +"")
+
+    return response.status(200).json(fullcontrol['rows']);
+
+  }
+
+  async trips_scheduling_itinerary_driver({ params, response }) {
+    const fullcontrol = await Database
+      .raw("SELECT * FROM public.trip_view WHERE flag_status_trip is NULL and to_date(start,'YYYY-MM-DD') > to_date(TO_CHAR(NOW() :: DATE, 'YYYY-MM-DD'),'YYYY-MM-DD') AND user_id = "+ params.id +"")
+
+    return response.status(200).json(fullcontrol['rows']);
 
   }
 
@@ -89,6 +135,96 @@ class TripController {
    * Update trip details.
    * PUT or PATCH trips/:id
    */
+  async update_kminitial({ params, request, response }) {
+    const data = request.only([
+      'km_initial'
+    ])
+
+    const trip = await Trip.find(params.id)
+    if (!trip) {
+      return response.status(404).json({ data: 'Resource not found' })
+    }
+
+    trip.km_initial = data.km_initial
+    trip.flag_finish_trip = 'S'  
+
+    await trip.save()
+
+    return response.status(200).json(trip)
+  }
+
+  async update_kmfinal({ auth, params, request, response }) {
+    const data = request.only([
+      'km_final',
+      'gas',
+      'rating',
+      'signature'
+    ])
+
+    const trip = await Trip.find(params.id)
+    if (!trip) {
+      return response.status(404).json({ data: 'Resource not found' })
+    }
+
+    trip.km_final = data.km_final
+    trip.flag_gas = data.gas
+    trip.rating_vehicle = data.rating
+    trip.flag_finish_trip = 'R'
+    trip.signature_passenger = data.signature 
+
+    await trip.save()
+
+    return response.status(200).json(trip)
+  }
+
+  /**
+   * Update trip details.
+   * PUT or PATCH trips/:id
+   */
+  async update_start({ auth, params, request, response }) {
+    const data = request.only([
+      'date_departure',
+      'hour_departure'
+    ])
+
+    const trip = await Trip.find(params.id)
+    if (!trip) {
+      return response.status(404).json({ data: 'Resource not found' })
+    }
+
+    trip.date_departure = data.date_departure
+    trip.hour_departure = data.hour_departure
+    trip.flag_status_trip = 'S'  
+
+    await trip.save()
+
+    return response.status(200).json(trip)
+  }
+
+  async update_end({ auth, params, request, response }) {
+    const data = request.only([
+      'date_return',
+      'hour_return'
+    ])
+
+    const trip = await Trip.find(params.id)
+    if (!trip) {
+      return response.status(404).json({ data: 'Resource not found' })
+    }
+
+    trip.date_return = data.date_return
+    trip.hour_return = data.hour_return
+    trip.flag_status_trip = 'R'     
+
+    await trip.save()
+
+    return response.status(200).json(trip)
+  }
+
+  /**
+   * Update trip details.
+   * PUT or PATCH trips/:id
+   */
   async update({ auth, params, request, response }) {
     const data = request.only([
       'scheduling_id',
@@ -101,7 +237,8 @@ class TripController {
       'date_return',
       'hour_departure',
       'hour_return',
-      'note'
+      'flag_gas',
+      'flag_finish_trip'
     ])
 
     const trip = await Trip.find(params.id)
@@ -119,8 +256,10 @@ class TripController {
     trip.date_return = data.date_return
     trip.hour_departure = data.hour_departure
     trip.hour_return = data.hour_return
-    trip.note = data.note
+    trip.flag_gas = data.flag_gas
     trip.created_by = auth.user.id
+    trip.flag_finish_trip = data.flag_finish_trip
+    
 
     await trip.save()
 

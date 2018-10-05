@@ -19,6 +19,15 @@ class UserController {
 
   }
 
+  async profile ({ auth, request, response, view }) {
+  try {
+    return await auth.getUser()
+  } catch (error) {
+    response.send('Missing or invalid api token')
+  }
+
+}
+
   /**
  * Show a list of all drivers users.
  * GET driver
@@ -31,6 +40,21 @@ class UserController {
       .select("id", "username", "email", "name", "lastname", "role", "department", "enrollment", "telephone")
       .where({ role: 'driver'})
   }
+
+
+    /**
+ * Return Qty Drivers
+ * GET drivers/count
+ */
+async count({ params, request, response, view }) {
+  const count = await Database
+    .from('users')
+    .where('role', 'driver')
+    .count('* as total')                          // returns array
+
+
+  return count
+}
 
 
   /**

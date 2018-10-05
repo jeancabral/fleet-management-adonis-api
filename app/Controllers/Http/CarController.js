@@ -1,6 +1,7 @@
 'use strict'
 
 const Car = use('App/Models/Car')
+const Database = use('Database')
 
 /**
  * Resourceful controller for interacting with cars
@@ -10,7 +11,7 @@ class CarController {
    * Show a list of all cars.
    * GET cars
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
 
     const cars = Car.all()
 
@@ -22,7 +23,7 @@ class CarController {
    * Create/save a new car.
    * POST cars
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
 
     const data = request.only([
       'name',
@@ -60,10 +61,23 @@ class CarController {
   }
 
   /**
+ * Return Qty Cars
+ * GET cars/count
+ */
+  async count({ params, request, response, view }) {
+    const count = await Database
+      .from('cars')
+      .count('* as total')                          // returns array
+
+    return count
+  }
+
+
+  /**
    * Display a single car.
    * GET cars/:id
    */
-  async show ({ params, request, response, view }) {
+  async show({ params, request, response, view }) {
     const car = await Car.find(params.id)
 
     if (!car) {
@@ -77,7 +91,7 @@ class CarController {
    * Update car details.
    * PUT or PATCH cars/:id
    */
-  async update ({ params, request, response }) {
+  async update({ params, request, response }) {
 
     const data = request.only([
       'name',
@@ -120,7 +134,7 @@ class CarController {
    * Delete a car with id.
    * DELETE cars/:id
    */
-  async destroy ({ params, response }) {
+  async destroy({ params, response }) {
     const car = await Car.find(params.id)
     if (!car) {
       return response.status(404).json({ data: 'Resource not found' })

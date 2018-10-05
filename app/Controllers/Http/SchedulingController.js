@@ -22,6 +22,7 @@ class SchedulingController {
         'schedulings.created_at', 'schedulings.updated_at', 'trips.ticket')
       .from('schedulings')
       .fullOuterJoin('trips', 'schedulings.id', 'trips.scheduling_id')
+      .whereNull('trips.ticket')
       .with('user')
       .fetch()
 
@@ -29,14 +30,23 @@ class SchedulingController {
 
   }
 
-  async fullcalendar({ request, response, view }) {
+  async countOpenSchedulings({ request, response, view }) {
+
+    const open_schedulings = await Database
+    .raw("select COUNT (*) from public.scheduling_view where scheduling_view.trip = 'Aguardando Programação'")
+
+    return response.status(200).json(open_schedulings['rows']);
+
+  }
+
+  async schedulings_fullcalendar({ request, response, view }) {
 
     //const schedulings = Scheduling.with('users').all()
 
-  const fullcontrol =  await Database
-  .raw('select * from public.scheduling_view')
+    const fullcontrol = await Database
+      .raw('select * from public.scheduling_view')
 
-  return response.status(200).json(fullcontrol['rows']);
+    return response.status(200).json(fullcontrol['rows']);
 
   }
 
