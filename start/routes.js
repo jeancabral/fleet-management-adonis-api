@@ -26,7 +26,7 @@ Route.group(() => {
 
   Route.get("/profile", "UserController.profile").middleware("auth");
 
-  Route.post("/users", "UserController.create");
+  Route.post("/users", "UserController.create").middleware("auth");
 
   Route.get("images/:path", "CsvController.show").middleware("auth");
 
